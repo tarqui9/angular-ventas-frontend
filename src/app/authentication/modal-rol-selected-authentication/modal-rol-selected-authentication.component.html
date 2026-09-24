@@ -1,0 +1,37 @@
+<div class="addContainer">
+    <div class="modalHeader d-flex justify-content-between align-items-center">
+        <div class="editRowModal">
+            <div class="modal-about">
+                Seleccione un rol
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div mat-dialog-content>
+        <form [formGroup]="form" class="register-form px-4 py-3" (ngSubmit)="ingresar(form.value)">
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Roles</mat-label>
+                        <mat-select formControlName="credencialUser">
+                            <mat-option *ngFor="let item of rolesUser;" [value]="{id: item.id, display_name: item.display_name, name: item.name}">
+                                {{item.display_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 mb-3 d-flex justify-content-between">
+                    <button [disabled]="!form.valid || loading" [class.auth-spinner]="loading" mat-raised-button
+                        color="primary" type="submit">Ingresar</button>
+                    <button type="button" color="warn" mat-raised-button (click)="dialogRef.close()">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

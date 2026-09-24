@@ -1,0 +1,104 @@
+<div class="d-md-none">
+    <div class="w-100 d-flex flex-row justify-content-between text-center pr-1 mb-3">
+        <div>
+            <strong class="d-block">Total</strong>
+            <span>{{ total.value | number: '1.2-2' }}</span>
+        </div>
+    </div>
+    <form [formGroup]="form">
+        <div class="row d-flex justify-content-center">
+            <!-- Selector de productos -->
+            <mat-form-field class="example-full-width mb-1" appearance="outline">
+                <mat-label>Productos</mat-label>
+                <mat-icon matSuffix>inventory_2</mat-icon>
+                <mat-select formControlName="producto">
+                    <ngx-mat-select-search placeholderLabel="Buscar Producto" noEntriesFoundLabel="No hay resultados"
+                        [formControl]="searchControlProducto">
+                    </ngx-mat-select-search>
+                    <mat-option *ngFor="let item of filteredProductos" [value]="item">
+                        {{ item?.codigo }} {{ item?.nombre }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Agregar producto -->
+            <div>
+                <div [formGroup]="formDetalle" class="card-content d-flex flex-wrap">
+                    <div class="col-md-6" hidden>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Nombre del Producto</mat-label>
+                            <input matInput formControlName="nombre_producto" readonly>
+                        </mat-form-field>
+                    </div>
+                    
+                    <mat-form-field class="w-50 pr-1 mb-1" appearance="outline">
+                        <mat-label>Lote</mat-label>
+                        <input matInput formControlName="lote">
+                    </mat-form-field>
+
+                    <mat-form-field class="w-50 pr-1 mb-1" appearance="outline">
+                        <mat-label>F. Ven.</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha_vencimiento">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-50 pr-1 mb-1" appearance="outline">
+                        <mat-label>Cantidad</mat-label>
+                        <input matInput formControlName="cantidad" type="number" (input)="calcularSubtotal()">
+                    </mat-form-field>
+
+                    <mat-form-field class="w-50 pr-1 mb-1" appearance="outline">
+                        <mat-label>Costo</mat-label>
+                        <input matInput formControlName="costo_unitario" type="number" (input)="calcularSubtotal()">
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100 pr-1 mb-1" appearance="outline">
+                        <mat-label>Subtotal</mat-label>
+                        <input matInput formControlName="subtotal" type="number" readonly>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Botón para agregar producto -->
+            <div class="col-md-12 d-flex align-items-center">
+                <button class="example-full-width" mat-flat-button type="button" [disabled]="!formDetalle.valid" color="primary" (click)="sumarUno()">
+                    <mat-icon>add</mat-icon> Agregar
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div *ngIf="detallePedidosFormArray && detallePedidosFormArray.length > 0"
+        style="max-height: 400px; overflow-y: auto;">
+        <mat-card *ngFor="let item of detallePedidosArrayControls; let i = index" [formGroup]="item"
+            class="mb-3 custom-card">
+            <mat-card-header class="d-flex justify-content-between align-items-center">
+                <mat-card-title class="font-bold custom-card-title">
+                    {{ item.get('nombre_producto')?.value }}
+                </mat-card-title>
+                <button type="button" matTooltip="Quitar Producto" mat-icon-button color="warn"
+                    (click)="restarUno(i); $event.stopPropagation()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div class="d-flex flex-column custom-card-content">
+                    <div class="d-flex justify-content-between">
+                        <strong>Costo:</strong> <span>{{ item.get('costo_unitario').value | number: '1.2-2' }}</span>
+                        <strong>Cantidad:</strong> <span>{{ item.get('cantidad').value }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Lote:</strong> <span>{{ item.get('lote')?.value }}</span>
+                        <strong>Sub Total:</strong> <span>{{ item.get('cantidad')?.value * item.get('costo_unitario')?.value |
+                            number: '1.2-2' }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Fecha Vencimiento:</strong> <span>{{ item.get('fecha_vencimiento')?.value | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

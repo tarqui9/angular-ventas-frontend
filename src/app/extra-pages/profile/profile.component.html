@@ -1,0 +1,93 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header d-none d-md-block">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="'Perfil'" [items]="['Home','Extra']" [active_item]="'Perfil'">
+      </app-breadcrumb>
+    </div>
+    <!-- Your content goes here  -->
+    <div class="row clearfix">
+      <div class="col-lg-4 col-md-12">
+        <div class="card">
+          <div class="m-b-20">
+            <div class="contact-grid">
+              <div class="profile-header bg-dark">
+                <div class="user-name">{{empleados?.nombre_completo}}</div>
+                <div class="name-center">
+                  {{empleados?.funcionario?.empresa?.nombre}}
+                </div>
+                <div class="name-center">{{empleados?.funcionario?.cargo}}</div>
+              </div>
+              <p class="mt-1">
+                <!--strong>Direccion:</!--strong> {{empleados?.funcionario?.direccion}} <br-->
+                <strong>Ci:</strong> {{empleados?.ci}}   
+              </p>
+              <p>
+                <span class="phone">
+                  <i class="material-icons">phone</i> {{empleados?.celular}}</span>           
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-12">
+        <div class="card">
+          <mat-tab-group>
+            <!-- Tab 1: Ajustes -->
+            <mat-tab>
+              <form [formGroup]="form" class="p-2 body" (ngSubmit)="cambiar_contrasenia(form.value)">
+                <ng-template mat-tab-label>
+                  <mat-icon class="example-tab-icon msr-2">settings</mat-icon>
+                  Ajustes de Perfil
+                </ng-template>
+                <div class="header">
+                  <h2><strong>Ajustes de</strong> Contraseña</h2>
+                </div>
+                <div class="body">
+                  <div class="example-container">
+                    <mat-form-field class="example-full-width" appearance="fill">
+                      <mat-label>Contraseña actual</mat-label>
+                      <input matInput type="password" formControlName="current_password">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                      <mat-label>Nueva contraseña</mat-label>
+                      <input matInput type="password" formControlName="password">
+                    </mat-form-field>
+                  </div>
+                  <button type="submit" mat-raised-button color="primary">Guardar</button>
+                </div>
+              </form>
+            </mat-tab>
+
+            <!-- Tab 2: Información Personal -->
+            <!--mat-tab *ngIf="tokenStorage.getUser().rol_id === 1">
+              <form [formGroup]="formConfigInventario" class="p-2 body" (ngSubmit)="cambiarConfiguracionInventario(formConfigInventario.value)">
+                <ng-template mat-tab-label>
+                  <mat-icon class="example-tab-icon msr-2">inventory_2</mat-icon>
+                  Ajustes de Control de Inventario
+                </ng-template>
+                <div class="header">
+                  <h2><strong>Tipo de control actual</strong> {{ tipo_control_actual ? tipo_control_actual : 'no seleccionado' }}</h2>
+                </div>
+                <div class="body">
+                  <div class="example-container">
+                    <mat-form-field class="example-full-width" appearance="fill">
+                      <mat-label>Tipo Control Inventario</mat-label>
+                      <mat-select formControlName="tipo_control">
+                        <mat-option value="peps">Primero en Entrar, Primero en Salir (PEPS)</mat-option>
+                        <mat-option value="ueps">Ultimo en Entrar, Primero en Salir (UEPS)</mat-option>
+                        <mat-option value="cpp">Costo Promedio Ponderado (CPP)</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <button type="submit" mat-raised-button color="primary">Guardar</button>
+                </div>
+              </form>
+            </mat-tab-->
+
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

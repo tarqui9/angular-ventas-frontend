@@ -1,0 +1,300 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header d-none d-md-block">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Pedidos'" [items]="['Inicio']" [active_item]="'Pedidos'">
+            </app-breadcrumb>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            <strong>Lista de </strong> Pedidos
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <form [formGroup]="form" *ngIf="!pedido_id">
+                            <div class="row d-flex flex-row">
+                                <!--div class="col-md-6">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-select formControlName="sucursal_id" placeholder="Seleccione la sucursal">
+                                            <mat-option *ngFor="let sucursal of sucursales" [value]="sucursal?.id">
+                                                {{ sucursal?.nombre }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div-->
+                                <div class="col-xl-4 col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-select formControlName="cliente_id" placeholder="Seleccione un cliente">
+                                            <mat-option *ngFor="let cliente of clientes" [value]="cliente?.id">
+                                                {{ cliente?.razon_social+"("+cliente?.nit_ci+")"}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-xl-4 col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Fecha de Inicio</mat-label>
+                                        <input matInput [matDatepicker]="pickerInicio" formControlName="fecha_inicio">
+                                        <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                                        <mat-datepicker #pickerInicio></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-xl-4 col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Fecha de Fin</mat-label>
+                                        <input matInput [matDatepicker]="pickerFin" formControlName="fecha_fin">
+                                        <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                                        <mat-datepicker #pickerFin></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-select formControlName="tipo" placeholder="Tipo">
+                                            <mat-option value="">Todos</mat-option>
+                                            <mat-option value="Contado">Contado</mat-option>
+                                            <mat-option value="Credito">Credito</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                        <div *ngIf="agrupado">
+                            Estado: {{ agrupado.estado }}
+                        </div>
+
+                        <div class="materialTableHeader">
+                            <div class="left">
+                                <ul class="header-buttons-left ms-0">
+                                    <li class="tbl-search-box">
+                                        <label for="search-input"><i
+                                                class="material-icons search-icon">search</i></label>
+                                        <input placeholder="Buscador" (keyup)="applyFilters($event)" type="text" #filter
+                                            class="browser-default search-field" aria-label="Search box">
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="right" *ngIf="!pedido_id && tokenSorage.getUser().rol?.name === 'vendedor'">
+                                <ul class="tbl-export-btn">
+                                    <li class="tbl-header-btn">
+                                        <div class="m-l-10" matTooltip="Agregar Ingreso">
+                                            <button mat-raised-button color="primary"
+                                                [routerLink]="'/dashboard/pedidos/crear'">
+                                                <mat-icon class="col-white">add</mat-icon>
+                                                <span class="d-none d-md-inline">Nuevo Registro</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="body table-responsive mt-3 d-none d-md-block">
+                            <table class="d-flex justify-content-center " mat-table [dataSource]="paginate"
+                                class="w-100">
+                                <ng-container matColumnDef="Nº">
+                                    <th mat-header-cell *matHeaderCellDef> Nº </th>
+                                    <td mat-cell *matCellDef="let i = index">
+                                        {{this.paginator.pageIndex === 0 ? i + 1 : 1 + i + this.paginator.pageIndex *
+                                        this.paginator.pageSize}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Fecha">
+                                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                    <td mat-cell *matCellDef="let element" > {{element?.fecha |
+                                        date:'dd/MM/yyyy'}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="Razon Social">
+                                    <th mat-header-cell *matHeaderCellDef> Razón Social </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.razon_social}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Nit">
+                                    <th mat-header-cell *matHeaderCellDef> NIT/CI </th>
+                                    <td mat-cell *matCellDef="let element" >
+                                        {{element?.nit_ci}} </td>
+                                </ng-container>
+                                <!--ng-container matColumnDef="Sucursal">
+                                    <th mat-header-cell *matHeaderCellDef> Sucursal </th>
+                                    <td mat-cell *matCellDef="let element" class="text-uppercase">
+                                        {{element?.sucursal?.nombre}} </td>
+                                </ng-container-->
+                                <ng-container matColumnDef="Tipo Pago">
+                                    <!-- <th mat-header-cell *matHeaderCellDef> Tipo Pago </th> -->
+                                    <th mat-header-cell *matHeaderCellDef> Tipo Venta </th>
+                                    <td mat-cell *matCellDef="let element" class="text-uppercase">
+                                        {{element?.tipo}}
+                                    </td>
+                                    <!-- {{element?.tipopago?.nombre}} -->
+                                </ng-container>
+                                <ng-container matColumnDef="Total">
+                                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                                    <td mat-cell *matCellDef="let element" >
+                                        {{element?.total | number:'1.2-2'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Pagado">
+                                    <th mat-header-cell *matHeaderCellDef> Pagado </th>
+                                    <td mat-cell *matCellDef="let element" >
+                                        <span *ngIf="element?.pagos !== null; else emptyValue">
+                                            {{ element?.pagos | number:'1.2-2' }}
+                                        </span>
+                                        <ng-template #emptyValue>-</ng-template>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Cobros">
+                                    <th mat-header-cell *matHeaderCellDef> Cobros </th>
+                                    <td mat-cell *matCellDef="let element" >
+                                        <span *ngIf="element?.efectivo !== 0; else emptyValue">
+                                            {{ element?.efectivo | number:'1.2-2' }}
+                                        </span>
+                                        <ng-template #emptyValue>-</ng-template>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Deuda">
+                                    <th mat-header-cell *matHeaderCellDef> Deuda </th>
+                                    <td mat-cell *matCellDef="let element" >
+                                        {{element?.deuda | number:'1.2-2'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Estado">
+                                    <th mat-header-cell *matHeaderCellDef> Estado </th>
+                                    <td mat-cell *matCellDef="let element" class="text-uppercase">
+                                        {{element?.estado}}
+                                        <div *ngIf="element?.estado == 'ENTREGADO' && element?.deuda != 0" class="text-center">
+                                            {{ element?.dias_transcurridos }} dias
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Acciones">
+                                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button mat-icon-button style="color: rgb(14, 174, 214);" class="me-2"
+                                            (click)="mostrarPdfPedido(element.id)">
+                                            <mat-icon matSuffix>print</mat-icon>
+                                        </button>
+                                        <div *ngIf="!pedido_id">
+                                            <button mat-icon-button color="primary" class="me-2"
+                                                [routerLink]="['/dashboard/pedidos/editar/',element?.id]"
+                                                routerLinkActive="router-link-active">
+                                                <mat-icon matSuffix>edit</mat-icon>
+                                            </button>
+                                            <button mat-icon-button color="warn" class="me-2"
+                                                (click)="eliminar(element?.id)">
+                                                <mat-icon matSuffix>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                        <button *ngIf="pedido_id && element?.estado != 'DEVUELTO' && element?.estado != 'ENTREGADO' && tokenSorage.getUser().rol_id == 3" mat-icon-button matTooltip="Entrega"
+                                            color="warning" class="me-2" (click)="entregarPedido(element?.id)">
+                                            <mat-icon matSuffix>local_shipping</mat-icon>
+                                        </button>
+                                        <button *ngIf="pedido_id && element.deuda && element?.estado != 'DEVUELTO' && tokenSorage.getUser().rol_id == 3 && element.tipo == 'Contado'" mat-icon-button matTooltip="Hacer Cobro"
+                                            color="warning" class="me-2" (click)="modalCobrosPedido(element?.id)">
+                                            <mat-icon matSuffix>payment</mat-icon>
+                                        </button>
+                                        <button *ngIf="!pedido_id && element.deuda && element?.estado != 'DEVUELTO' && tokenSorage.getUser().rol_id == 2 && element.tipo == 'Credito'" mat-icon-button matTooltip="Hacer Cobro"
+                                            color="warning" class="me-2" (click)="modalCobrosPedido(element?.id)">
+                                            <mat-icon matSuffix>payment</mat-icon>
+                                        </button>
+                                        <button *ngIf="agrupado?.estado != 'DESPACHADO' && tokenSorage.getUser().rol_id == 3" mat-icon-button matTooltip="Quitar" color="warn" class="me-2"
+                                            (click)="eliminarAgrupado(element?.id)">
+                                            <mat-icon matSuffix>remove_circle</mat-icon>
+                                        </button>
+                                        <button *ngIf="agrupado?.estado == 'DESPACHADO' && element?.estado != 'ENTREGADO' && element?.estado != 'DEVUELTO'" mat-icon-button matTooltip="Devolución" color="accent" class="me-2"
+                                            (click)="devolverPedido(element?.id)">
+                                            <mat-icon matSuffix>reply</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="nombreColumnas"></tr>
+                                <tr mat-row *matRowDef="let row; columns: nombreColumnas;"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[20, 10, 5]" showFirstLastButtons></mat-paginator>
+                        </div>
+
+
+                        <!-- Vista en tarjetas para pantallas móviles -->
+                        <div class="row d-md-none">
+                            <div class="col-12 mb-2" *ngFor="let element of pedidos">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body p-2">
+                                        <!-- Encabezado de la tarjeta -->
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0">{{ element?.razon_social }}</h5>
+                                            <small class="text-muted">{{ element?.fecha | date:'dd/MM/yyyy' }}</small>
+                                        </div>
+                                        <!-- Información en formato de columnas -->
+                                        <div class="d-flex flex-row justify-content-between text-center mt-2 mb-1">
+                                            <div>
+                                                <strong class="d-block">Nit</strong>
+                                                <span>{{ element?.nit_ci }}</span>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">Total</strong>
+                                                <span>{{ element?.total | currency }}</span>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">Pagado</strong>
+                                                <span>{{ element?.pagos | currency }}</span>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">Deuda</strong>
+                                                <span>{{ element?.deuda | currency }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-center bg-warning text-white mt-2">
+                                            <span>{{ element?.estado }}</span>
+                                            <div *ngIf="element?.estado == 'ENTREGADO' && element?.deuda != 0" class="text-center">
+                                                {{ element?.dias_transcurridos }} dias
+                                            </div>
+                                        </div>
+                                        <!-- Botones de acción con diseño compacto -->
+                                        <div class="d-flex justify-content-around mt-2">
+                                            <button mat-icon-button color="primary"
+                                                (click)="descargarPdfPedidos(element?.id)">
+                                                <mat-icon>picture_as_pdf</mat-icon>
+                                            </button>
+                                            <button *ngIf="!pedido_id && element?.estado == 'PEDIDO'" mat-icon-button color="primary"
+                                                [routerLink]="['/dashboard/pedidos/editar/',element?.id]"
+                                                routerLinkActive="router-link-active">
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <button *ngIf="!pedido_id && element?.estado == 'PEDIDO'" mat-icon-button color="warn"
+                                                (click)="eliminar(element?.id)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                            <button *ngIf="pedido_id && element?.estado != 'DEVUELTO' && element?.estado != 'ENTREGADO' && tokenSorage.getUser().rol_id == 3" mat-icon-button matTooltip="Entrega"
+                                                color="warning" class="me-2" (click)="entregarPedido(element?.id)">
+                                                <mat-icon matSuffix>local_shipping</mat-icon>
+                                            </button>
+                                            <button *ngIf="pedido_id && element.deuda && element?.estado != 'DEVUELTO' && tokenSorage.getUser().rol_id == 3 && element.tipo == 'Contado'" mat-icon-button color="accent"
+                                                (click)="modalCobrosPedido(element?.id)">
+                                                <mat-icon>payment</mat-icon>
+                                            </button>
+                                            <button *ngIf="!pedido_id && element.deuda && element?.estado != 'DEVUELTO' && tokenSorage.getUser().rol_id == 2 && element.tipo == 'Credito'" mat-icon-button color="accent"
+                                                (click)="modalCobrosPedido(element?.id)">
+                                                <mat-icon>payment</mat-icon>
+                                            </button>
+                                            <button *ngIf="agrupado?.estado != 'DESPACHADO' && tokenSorage.getUser().rol_id == 3" mat-icon-button matTooltip="Quitar" color="warn" class="me-2"
+                                                (click)="eliminarAgrupado(element?.id)">
+                                                <mat-icon matSuffix>remove_circle</mat-icon>
+                                            </button>
+                                            <button *ngIf="agrupado?.estado == 'DESPACHADO' && element?.estado != 'ENTREGADO' && element?.estado != 'DEVUELTO'" mat-icon-button matTooltip="Devolución" color="accent" class="me-2"
+                                                (click)="devolverPedido(element?.id)">
+                                                <mat-icon matSuffix>reply</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

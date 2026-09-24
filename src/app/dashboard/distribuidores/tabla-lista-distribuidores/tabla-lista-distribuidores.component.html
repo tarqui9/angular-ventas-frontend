@@ -1,0 +1,125 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header d-none d-md-block">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Distribuidores'" [items]="['Inicio']" [active_item]="'Distribuidores'">
+            </app-breadcrumb>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            <strong>Lista de </strong> Distribuidores
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <div class="materialTableHeader">
+                            <div class="left">
+                                <ul class="header-buttons-left ms-0">
+                                    <li class="tbl-search-box">
+                                        <label for="search-input"><i
+                                                class="material-icons search-icon">search</i></label>
+                                        <input placeholder="Buscador" type="text" (keyup)="applyFilters($event)"
+                                            class="browser-default search-field" aria-label="Search box">
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--div class="right">
+                                <ul class="tbl-export-btn">
+                                    <li class="tbl-header-btn">
+                                        <div class="m-l-10" matTooltip="ADD">
+                                            <button mat-raised-button color="primary" (click)="create()">
+                                                <mat-icon class="col-white">add</mat-icon>
+                                                Nuevo Registro
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div-->
+                        </div>
+                        <div class="table-responsive mt-3 d-none d-md-block">
+                            <table mat-table [dataSource]="paginado" class="w-100">
+                                <ng-container matColumnDef="Nº">
+                                    <th mat-header-cell *matHeaderCellDef> Nº </th>
+                                    <td mat-cell *matCellDef="let i = index">
+                                        {{this.paginator.pageIndex === 0 ? i + 1 : 1 + i + this.paginator.pageIndex *
+                                        this.paginator.pageSize}}
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Nombre Completo">
+                                    <th mat-header-cell *matHeaderCellDef> Nombre Completo</th>
+                                    <td mat-cell *matCellDef="let element"> {{element?.nombre_completo}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Ci">
+                                    <th mat-header-cell *matHeaderCellDef> Ci</th>
+                                    <td mat-cell *matCellDef="let element"> {{element?.ci}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Celular">
+                                    <th mat-header-cell *matHeaderCellDef> Celular</th>
+                                    <td mat-cell *matCellDef="let element"> {{element?.celular}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Email">
+                                    <th mat-header-cell *matHeaderCellDef> Correo Electronico</th>
+                                    <td mat-cell *matCellDef="let element"> {{element?.email}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Movilidad">
+                                    <th mat-header-cell *matHeaderCellDef> Movilidad</th>
+                                    <td mat-cell *matCellDef="let element"> {{element?.asignacion?.movilidad?.placa}} </td>
+                                </ng-container>
+
+                                <!--ng-container matColumnDef="Habilitado">
+                                    <th mat-header-cell *matHeaderCellDef> Habilitado</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <mat-slide-toggle [id]="element.id" [checked]="!!element.habilitado"
+                                            (change)="enableCategoria(element.id)"></mat-slide-toggle>
+                                    </td>
+                                </ng-container-->
+                                <ng-container matColumnDef="Acciones">
+                                    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                                    <td mat-cell *matCellDef="let element">
+                                        <button mat-icon-button color="primary" class="me-1"
+                                            matTooltip="Asignar Movilidad"
+                                            (click)="modalAsignarMovilidad(element.id)">
+                                            <mat-icon matSuffix>local_shipping</mat-icon>
+                                        </button>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="nombreColumnas"></tr>
+                                <tr mat-row *matRowDef="let row; columns: nombreColumnas;"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[20, 10, 5]" showFirstLastButtons></mat-paginator>
+                        </div>
+
+                        <!-- Vista en tarjetas para pantallas móviles -->
+                        <div class="row d-md-none">
+                            <div class="col-12 mb-1" *ngFor="let element of distribuidores">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ element?.nombre_completo }}</h5>
+                                        <p class="card-text"><strong>Ci:</strong> {{ element?.ci }}</p>
+                                        <p class="card-text"><strong>Celular:</strong> {{ element?.celular }}</p>
+                                        <p class="card-text"><strong>Correo Electronico:</strong> {{ element?.email }}</p>
+                                        <p class="card-text"><strong>Movilidad:</strong> {{ element?.asignacion?.movilidad?.placa }}</p>
+                                        <div class="mt-2">
+                                            <button mat-button color="primary"
+                                                matTooltip="Asignar Movilidad"
+                                                (click)="modalAsignarMovilidad(element?.id)">Asignar Movilidad</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

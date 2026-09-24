@@ -1,0 +1,60 @@
+<div class="addContainer">
+    <div class="modalHeader">
+        <div class="editRowModal">
+            <div class="modalHeader clearfix">
+                <div class="modal-about">
+                    Dar de baja suministro
+                </div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <form class="register-form m-4" [formGroup]="form" (ngSubmit)="registrarBajaSuministro()">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                    <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Cantidad a dar de baja</mat-label>
+                        <input matInput formControlName="cantidad" required>
+                        <mat-error *ngIf="form.get('cantidad')?.hasError('required')">
+                            La cantidad es Requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                    <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Justificacion</mat-label>
+                        <input matInput formControlName="justificacion" required>
+                        <mat-error *ngIf="form.get('justificacion')?.hasError('required')">
+                            La justificacion es Requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                    <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Fecha</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="fecha" [disabled]="true">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="form.get('fecha')?.hasError('required')">
+                            La fecha es requerida
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <div class="example-button-row">
+                        <button [disabled]="!form.valid || loading" [class.auth-spinner]="loading" mat-raised-button
+                            color="primary" type="submit">Guardar</button>
+                        <button type="button" color="warn" mat-raised-button data-dismiss="dialogRef" tabindex="-1"
+                            (click)="dialogRef.close()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

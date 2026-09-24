@@ -1,0 +1,118 @@
+<div class="addContainer">
+  <div class="modalHeader">
+    <div class="editRowModal">
+      <div class="modalHeader clearfix d-flex justify-content-between align-items-center">
+        <div class="modal-about">
+          Nuevo Registro
+        </div>
+        <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-content>
+    <form class="register-form p-md-3" [formGroup]="form" (ngSubmit)="register(form.value)">
+      <div class="row">
+        <!-- Nombre -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" required>
+            <mat-icon matSuffix>face</mat-icon>
+            <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+              Nombre es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Razón Social -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Razón Social</mat-label>
+            <input matInput formControlName="razon_social" required>
+            <mat-icon matSuffix>business</mat-icon>
+            <mat-error *ngIf="form.get('razon_social')?.hasError('required')">
+              Razón Social es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Nit -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Nit</mat-label>
+            <input matInput formControlName="nit" required>
+            <mat-icon matSuffix>credit_card</mat-icon>
+            <mat-error *ngIf="form.get('nit')?.hasError('required')">
+              Nit es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Ciudad -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Ciudad</mat-label>
+            <input matInput formControlName="ciudad" required>
+            <mat-icon matSuffix>location_city</mat-icon>
+            <mat-error *ngIf="form.get('ciudad')?.hasError('required')">
+              Ciudad es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- País -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>País</mat-label>
+            <input matInput formControlName="pais" required>
+            <mat-icon matSuffix>public</mat-icon>
+            <mat-error *ngIf="form.get('pais')?.hasError('required')">
+              País es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Dirección -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Dirección</mat-label>
+            <input matInput formControlName="direccion" required>
+            <mat-icon matSuffix>home</mat-icon>
+            <mat-error *ngIf="form.get('direccion')?.hasError('required')">
+              Dirección es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="col-md-6 col-sm-12 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono" required>
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+              Teléfono es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="row mt-2">
+        <div class="d-flex col-12 text-center">
+          <button type="submit" style="margin-right: 5px;" [disabled]="!form.valid || loading"
+            [class.auth-spinner]="loading" mat-raised-button color="primary">
+            <mat-icon>save</mat-icon> Guardar
+          </button>
+          <button type="button" (click)="dialogRef.close()" mat-raised-button data-dismiss="dialogRef" tabindex="-1"
+            color="warn">
+            <mat-icon>cancel</mat-icon> Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

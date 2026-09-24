@@ -1,0 +1,29 @@
+.custom-card {
+  background-color: #f5f5f5; /* Cambia este color según prefieras */
+  color: #333; /* Color de texto */
+  border: 1px solid #ccc; /* Bordes sutiles */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card-title {
+  color: #004d40; /* Color del título de la tarjeta */
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.custom-card-content strong {
+  color: #00796b; /* Color para las etiquetas de los detalles */
+}
+
+.custom-card-content span {
+  color: #333; /* Color para los valores */
+}
+
+button[mat-icon-button] {
+  color: #d32f2f; /* Cambia el color del botón de eliminación */
+}
+
+.custom-card-content .d-flex {
+  font-size: 0.95em; /* Ajusta el tamaño del texto dentro del contenido */
+}

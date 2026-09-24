@@ -1,0 +1,25 @@
+.mat-form-field {
+    margin: 4px 0; /* Ajusta el margen para reducir el espacio entre campos */
+}
+.card {
+    padding: 8px; /* Reduce el padding interno */
+    margin-bottom: 8px; /* Ajusta el espacio entre tarjetas */
+}
+
+
+
+.totales-columna {
+    text-align: right; // Alinea todo el texto a la derecha
+    font-size: 0.9rem; // Fuente más pequeña
+    line-height: 1.5; // Espaciado entre líneas
+  
+    div {
+      margin-bottom: 5px; // Espaciado entre filas
+    }
+  
+    strong {
+      color: #333; // Color para resaltar etiquetas
+      font-weight: bold; // Destaca los títulos
+    }
+  }
+  

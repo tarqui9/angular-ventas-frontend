@@ -1,0 +1,32 @@
+
+a{
+    text-decoration: none;
+}
+
+.role-display {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: rgba(76, 175, 80, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .sidebar .navbar-header {
+    //background-color: #333; /* Fondo oscuro para la cabecera */
+    padding: 10px;
+    border-bottom: 1px solid #4CAF50; /* Línea separadora con color del rol */
+  }
+  
+  .logo-name {
+    font-size: 20px;
+    color: #ffffff;
+  }
+  
+  .menuIcon {
+    color: #ffffff;
+  }
+  

@@ -1,0 +1,212 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header d-none d-md-block">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="'Suministros'" [items]="['Inicio']" [active_item]="'Suministros'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2>
+              <mat-icon>inventory</mat-icon>
+              <strong>Registro de </strong> Productos
+            </h2>
+          </div>
+          <div class="body">
+            <form [formGroup]="form" (ngSubmit)="register(form.value)">
+              <mat-tab-group animationDuration="0ms">
+                <mat-tab label="DETALLE GENERAL">
+                  <div class="body">
+                    <div class="row p-md-4 ">
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                          <mat-label><mat-icon>category</mat-icon> Categoría</mat-label>
+                          <mat-select formControlName="categoria_id">
+                            <ngx-mat-select-search placeholderLabel="Buscar" noEntriesFoundLabel="No hay resultados"
+                              [formControl]="searchControlCategoria">
+                            </ngx-mat-select-search>
+                            <mat-option *ngFor="let item of filteredCategoria" [value]="item.id">
+                              {{ item.nombre }}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="form.get('categoria_id')?.hasError('required')">
+                            Categoría requerida
+                          </mat-error>
+                        </mat-form-field>
+                        <a type="button" class="text" (click)="crearCategoria()"
+                          style="color: rgb(0, 153, 255); float: right;">
+                          <mat-icon>add</mat-icon> Agregar Categoria
+                        </a>
+                      </div>
+
+                      <div class="col-md-6">
+                        <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                          <mat-label><mat-icon>label</mat-icon> Nombre</mat-label>
+                          <input matInput formControlName="nombre" required>
+                          <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+                            Nombre requerido
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                          <mat-label><mat-icon>label</mat-icon> Cantidad Unidades</mat-label>
+                          <input type="number" matInput formControlName="cantidad_unidades" required>
+                          <mat-error *ngIf="form.get('cantidad_unidades')?.hasError('required')">
+                            La cantidad de unidades es requerida
+                          </mat-error>
+                          <mat-error *ngIf="form.get('cantidad_unidades')?.hasError('min')">
+                            La cantidad mínima es de 1
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                          <mat-label><mat-icon>qr_code</mat-icon> Código</mat-label>
+                          <input matInput formControlName="codigo">
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-4">
+                        <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                          <mat-label><mat-icon>attach_money</mat-icon>Precio</mat-label>
+                          <input matInput type="number" formControlName="precio">
+                          <mat-error *ngIf="form.get('precio')?.hasError('required')">
+                            El precio es requerido
+                          </mat-error>
+                          <mat-error *ngIf="form.get('precio')?.hasError('min')">
+                            El precio debe ser mayor a 0.1
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-4">
+                        <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+                          <mat-label><mat-icon>description</mat-icon> Descripción</mat-label>
+                          <textarea matInput formControlName="descripcion"></textarea>
+                          <mat-error *ngIf="form.get('descripcion')?.hasError('required')">
+                            Descripción es requerida
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="row p-md-4">
+                      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                        <label for="marca" class="form-label"><mat-icon>camera_alt</mat-icon> Subir Foto</label>
+                        <app-file-upload formControlName="file" titulo="Cargar foto"
+                          (foto)="agregarFoto($event)"></app-file-upload>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab>
+
+                <!--mat-tab label="UNIDADES">
+                  <div class="body">
+                    <div class="row p-4 d-flex justify-content-center">
+
+                      <div class="col-md-10 d-none d-md-block">
+                        <div class="table-responsive">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"><mat-icon>scale</mat-icon> Factor</th>
+                                <th scope="col"><mat-icon>attach_money</mat-icon> Precio</th>
+                                <th scope="col"><mat-icon>view_in_ar</mat-icon> Unidad</th>
+                                <th scope="col" style="text-align: right;">
+                                  <button type="button" mat-flat-button color="primary" (click)="sumarControl()">
+                                    <mat-icon>add</mat-icon> Agregar
+                                  </button>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of unidades?.controls; let i = index" [formGroup]="item">
+                                <th scope="row">{{ i + 1 }}</th>
+                                <td>
+                                  <mat-form-field appearance="outline">
+                                    <input matInput formControlName="factor" placeholder="Factor">
+                                  </mat-form-field>
+                                </td>
+                                <td>
+                                  <mat-form-field appearance="outline">
+                                    <input matInput formControlName="precio" placeholder="Precio">
+                                  </mat-form-field>
+                                </td>
+                                <td>
+                                  <mat-form-field appearance="outline">
+                                    <mat-select formControlName="unidad_id">
+                                      <mat-option *ngFor="let unidad of unidadesList" [value]="unidad?.id">
+                                        {{ unidad?.nombre }}
+                                      </mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                </td>
+                                <td style="text-align: right;">
+                                  <button type="button" mat-icon-button color="warn" (click)="removerControl(i)">
+                                    <mat-icon>delete</mat-icon>
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="col-12 d-md-none">
+                        <div class="card mb-3 w-100" *ngFor="let item of unidades?.controls; let i = index" [formGroup]="item">
+                          <div class="card-body">
+                            <h5 class="card-title"><mat-icon>view_module</mat-icon> Unidad #{{ i + 1 }}</h5>
+                            <mat-form-field appearance="outline" class="w-100 mb-2">
+                              <mat-label><mat-icon>scale</mat-icon> Factor</mat-label>
+                              <input matInput formControlName="factor" placeholder="Factor">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="w-100 mb-2">
+                              <mat-label><mat-icon>attach_money</mat-icon> Precio</mat-label>
+                              <input matInput formControlName="precio" placeholder="Precio">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" class="w-100 mb-2">
+                              <mat-label><mat-icon>view_in_ar</mat-icon> Unidad</mat-label>
+                              <mat-select formControlName="unidad_id">
+                                <mat-option *ngFor="let unidad of unidadesList" [value]="unidad?.id">
+                                  {{ unidad?.nombre }}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                            <div class="text-right">
+                              <button type="button" mat-icon-button color="warn" (click)="removerControl(i)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <button type="button" mat-flat-button color="primary" (click)="sumarControl()" class="mt-3 w-100">
+                          <mat-icon>add</mat-icon> Agregar Unidad
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-tab-->
+              </mat-tab-group>
+
+              <!-- Botones de acción -->
+              <div class="row mt-2">
+                <div class="col-12 text-center">
+                  <button type="submit" style="margin-right: 5px;" [disabled]="!form.valid || loading" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon> Guardar
+                  </button>
+                  <button type="button" routerLink="/dashboard/suministros" mat-raised-button color="warn">
+                    <mat-icon>cancel</mat-icon> Cancelar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

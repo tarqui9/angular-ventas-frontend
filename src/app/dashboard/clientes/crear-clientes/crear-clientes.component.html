@@ -1,0 +1,118 @@
+<div class="addContainer">
+  <div class="modalHeader d-flex justify-content-between align-items-center">
+    <div class="modal-about">
+      {{ data?.title }}
+    </div>
+    <button mat-icon-button (click)="dialogRef.close()" class="modal-close-button" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+
+  <div mat-dialog-content>
+    <form [formGroup]="form" class="register-form p-md-3" (ngSubmit)="registerClient()">
+      <div class="row">
+        <!-- Nombre del Contacto -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Nombre del Contacto</mat-label>
+            <input matInput formControlName="contacto" required>
+            <mat-icon matSuffix>face</mat-icon>
+            <mat-error *ngIf="form.get('contacto')?.hasError('required')">
+              Nombre del contacto es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Celular -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Celular</mat-label>
+            <input matInput formControlName="celular" required>
+            <mat-icon matSuffix>phone_iphone</mat-icon>
+            <mat-error *ngIf="form.get('celular')?.hasError('required')">
+              Número de celular es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- NIT/CI -->
+        <div class="col-md-4 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>NIT/CI</mat-label>
+            <input matInput formControlName="nit_ci" required>
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-error *ngIf="form.get('nit_ci')?.hasError('required')">
+              NIT/CI es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Razón Social -->
+        <div class="col-md-4 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Razón Social</mat-label>
+            <input matInput formControlName="razon_social" required>
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-error *ngIf="form.get('razon_social')?.hasError('required')">
+              Razón social es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- TElefono -->
+        <div class="col-md-4 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="telefono">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="form.get('telefono')?.hasError('required')">
+              Número de teléfono requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Direccion -->
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width w-100" appearance="outline">
+            <mat-label>Dirección</mat-label>
+            <input matInput formControlName="direccion" required>
+            <mat-icon matSuffix>location_on</mat-icon>
+            <mat-error *ngIf="form.get('direccion')?.hasError('required')">
+              Dirección es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="tokenStorage.getUser()?.rol?.name !== 'vendedor'">
+        <div class="col-md-12 mb-3">
+          <label>Tipo de Pagos</label>
+          <div formArrayName="tipopagos">
+            <div *ngFor="let tipopago of tipopagos.controls; let i = index">
+              <mat-checkbox [formControl]="tipopago.get('selected')">
+                {{ listaTipoPagos[i]?.nombre }} ({{ listaTipoPagos[i]?.descuento }}%)
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="row mt-2">
+        <div class="d-flex col-12 text-center">
+          <button type="submit" style="margin-right: 5px;" [disabled]="!form.valid || loading"
+            [class.auth-spinner]="loading" mat-raised-button color="primary">
+            <mat-icon>save</mat-icon> Guardar
+          </button>
+          <button type="button" (click)="dialogRef.close()" mat-raised-button data-dismiss="dialogRef" tabindex="-1"
+            color="warn">
+            <mat-icon>cancel</mat-icon> Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+</div>

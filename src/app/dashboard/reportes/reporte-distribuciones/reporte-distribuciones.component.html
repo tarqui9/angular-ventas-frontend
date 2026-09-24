@@ -1,0 +1,195 @@
+<section class="content">
+    <div class="content-block">
+        <div class="block-header d-none d-md-block">
+            <!-- breadcrumb -->
+            <app-breadcrumb [title]="'Reporte Distribuciones'" [items]="['Inicio']"
+                [active_item]="'Reporte Distribuciones'">
+            </app-breadcrumb>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>
+                            <strong>Reporte de </strong> Distribuciones
+                        </h2>
+                    </div>
+                    <div class="body">
+                        <form [formGroup]="form">
+                            <div class="row d-flex flex-row">
+                                <div *ngIf="tokenStorage.getUser().rol_id === 1" class="col-xl-4 col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline"
+                                        subscriptSizing="dynamic">
+                                        <mat-label><mat-icon>category</mat-icon> Distribuidor</mat-label>
+                                        <mat-select formControlName="user_id">
+                                            <ngx-mat-select-search placeholderLabel="Buscar"
+                                                noEntriesFoundLabel="No hay resultados"
+                                                [formControl]="searchControlDistribuidor">
+                                            </ngx-mat-select-search>
+                                            <mat-option [value]="''">Todos los distribuidores</mat-option>
+                                            <mat-option *ngFor="let item of filteredDistribuidor" [value]="item?.id">
+                                                {{ item?.nombre_completo }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xl-4 col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Fecha Inicio</mat-label>
+                                        <input matInput [matDatepicker]="picker" formControlName="fecha_inicio">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xl-4 col-md-4">
+                                    <mat-form-field class="example-full-width" appearance="outline">
+                                        <mat-label>Fecha Fin</mat-label>
+                                        <input matInput [matDatepicker]="picker1" formControlName="fecha_fin">
+                                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker1></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="materialTableHeader">
+                            <div class="left">
+                                <ul class="header-buttons-left ms-0">
+                                    <li class="tbl-search-box">
+                                        <label for="search-input"><i
+                                                class="material-icons search-icon">search</i></label>
+                                        <input placeholder="Buscador" (keyup)="applyFilters($event)" type="text" #filter
+                                            class="browser-default search-field" aria-label="Search box">
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="right">
+                                <ul class="tbl-export-btn">
+                                    <li class="tbl-header-btn">
+                                        <div class="m-l-10">
+                                            <button mat-raised-button class="d-none d-md-block" matTooltip="Ver Pdf"
+                                                color="primary" (click)="mostrarPdfDistribuciones()">
+                                                <mat-icon class="col-white">print</mat-icon>
+                                                <span class="d-none d-md-inline">Pdf</span>
+                                            </button>
+                                            <button mat-raised-button class="d-md-none" matTooltip="Ver Pdf"
+                                                color="primary" (click)="descargarPdfDistribuciones()">
+                                                <mat-icon class="col-white">print</mat-icon>
+                                                <span class="d-none d-md-inline">Pdf</span>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="body table-responsive mt-3 d-none d-md-block">
+                            <table class="d-flex justify-content-center " mat-table [dataSource]="paginate"
+                                class="w-100">
+                                <ng-container matColumnDef="Nº">
+                                    <th mat-header-cell *matHeaderCellDef> Nº </th>
+                                    <td mat-cell *matCellDef="let i = index">
+                                        {{this.paginator.pageIndex === 0 ? i + 1 : 1 + i + this.paginator.pageIndex *
+                                        this.paginator.pageSize}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Fecha">
+                                    <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                                    <td mat-cell *matCellDef="let element" class="text-uppercase"> {{element?.fecha |
+                                        date:'dd/MM/yyyy'}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="Estado">
+                                    <th mat-header-cell *matHeaderCellDef> Estado </th>
+                                    <td mat-cell *matCellDef="let element" class="text-uppercase">
+                                        {{element?.estado}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Distribuidor">
+                                    <th mat-header-cell *matHeaderCellDef> Distribuidor </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.usuario?.nombre_completo}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Nro Pedidos">
+                                    <th mat-header-cell *matHeaderCellDef> Nro. Pedidos </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.nro_pedidos}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Nro Entregas">
+                                    <th mat-header-cell *matHeaderCellDef> Nro. Entregas </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.nro_entregados}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Pagado">
+                                    <th mat-header-cell *matHeaderCellDef> Pagado </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.pagado | number:'1.2-2'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Deuda">
+                                    <th mat-header-cell *matHeaderCellDef> Deuda </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.deuda | number:'1.2-2'}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Total">
+                                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                                    <td mat-cell *matCellDef="let element">{{element?.total | number:'1.2-2'}} </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="nombreColumnas"></tr>
+                                <tr mat-row *matRowDef="let row; columns: nombreColumnas;"></tr>
+                            </table>
+                            <mat-paginator [pageSizeOptions]="[20, 10, 5]" showFirstLastButtons></mat-paginator>
+                        </div>
+
+
+                        <!-- Vista en tarjetas para pantallas móviles -->
+                        <div class="row d-md-none">
+                            <div class="col-12 mb-2" *ngFor="let element of distribuciones">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body p-2">
+                                        <!-- Encabezado de la tarjeta -->
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="card-title mb-0">{{ element?.usuario?.nombre_completo }}</h5>
+                                            <small class="text-muted">{{ element?.fecha | date:'dd/MM/yyyy' }}</small>
+                                        </div>
+                                        <!-- Información en formato de columnas -->
+                                        <div class="d-flex flex-row justify-content-between text-center mt-2 mb-1">
+                                            <div>
+                                                <strong class="d-block">Nro. Pedidos</strong>
+                                                <span>{{ element?.nro_pedidos }}</span>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">Nro. Entregas</strong>
+                                                <span>{{ element?.nro_entregados }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row justify-content-between text-center mt-2 mb-1">
+                                            <div>
+                                                <strong class="d-block">Total</strong>
+                                                <span>{{ element?.total | number:'1.2-2' }}</span>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">Pagado</strong>
+                                                <span>{{ element?.pagado | number:'1.2-2' }}</span>
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">Deuda</strong>
+                                                <span>{{ element?.deuda | number:'1.2-2' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-center bg-warning text-white mt-2">
+                                            <span>{{ element?.estado }}</span>
+                                        </div>
+                                        <!-- Botones de acción con diseño compacto -->
+                                        <!--div class="d-flex justify-content-around mt-2">
+                                            <button mat-icon-button color="primary"
+                                                (click)="descargarPdfPedidos(element?.id)">
+                                                <mat-icon>picture_as_pdf</mat-icon>
+                                            </button>
+                                        </div-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

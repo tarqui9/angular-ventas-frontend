@@ -1,0 +1,206 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header d-none d-md-block">
+      <app-breadcrumb [title]="'Ingresos'" [items]="['Inicio']" [active_item]="'Ingresos'"></app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header">
+            <h2><strong>Crear </strong> Nuevo Registro</h2>
+          </div>
+          <div class="body">
+            <form [formGroup]="form" (ngSubmit)="guardar(form.value)">
+              <!-- <mat-tab-group animationDuration="0ms"> -->
+                <!-- Tab Información General -->
+                <!-- <mat-tab label="INFORMACION GENERAL"> -->
+                  <div class="row p-4">
+                    <div class="col-12 mb-4">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Proveedores</mat-label>
+                        <mat-icon matSuffix>store</mat-icon>
+                        <mat-select formControlName="proveedor_id">
+                          <ngx-mat-select-search placeholderLabel="Buscar" noEntriesFoundLabel="No hay resultados" [formControl]="searchControlProveedor"></ngx-mat-select-search>
+                          <mat-option *ngFor="let item of filteredProveedores" [value]="item.id">{{ item.nombre }}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.get('proveedor_id')?.hasError('required')">
+                            Proveedor es requerido
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Fecha Ingreso</mat-label>
+                        <mat-icon matSuffix>calendar_today</mat-icon>
+                        <input matInput formControlName="fecha" readonly>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Nro. de Comprobante</mat-label>
+                        <mat-icon matSuffix>receipt</mat-icon>
+                        <input matInput formControlName="numero" required>
+                        <mat-error *ngIf="form.get('numero')?.hasError('required')">
+                            Nro. de Comporbante es requerido
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                <!-- </mat-tab> -->
+
+                <!-- Tab Productos -->
+                <!-- <mat-tab label="PRODUCTOS"> -->
+                  <!-- <div class="mt-4 mb-2"> -->
+                    <div class="row p-4 d-flex justify-content-center d-none d-md-block">
+                      <div class="col-md-10">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                          <mat-label>Productos</mat-label>
+                          <mat-icon matSuffix>inventory_2</mat-icon>
+                          <mat-select formControlName="producto_id">
+                            <mat-option>
+                              <ngx-mat-select-search placeholderLabel="Buscar Suministro" [formControl]="textInput" [searching]="searching"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let item of productos" [value]="item">{{item.codigo}} {{item.nombre}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="col-md-2 d-flex align-items-center">
+                        <button mat-flat-button type="button" color="primary" (click)="sumarUno(form.value)">
+                          <mat-icon>add</mat-icon> Agregar
+                        </button>
+                      </div>
+                    </div>
+
+                    <app-crear-ingresos-movil 
+                      [detallePedidosFormArray]="detalle"
+                      [total]="form.get('total')"
+                    ></app-crear-ingresos-movil>
+
+                    <!-- Tabla para pantallas grandes -->
+                    <div class="table-responsive p-4 d-none d-md-block">
+                      <table class="table table-borderless">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Lote</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Costo Unitario</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let basic of detalle.controls; let i = index">
+                            <th>{{ i + 1 }}</th>
+                            <td>
+                              <mat-form-field>
+                                <mat-icon matSuffix>label</mat-icon>
+                                <input matInput [formControl]="basic.get('lote')">
+                              </mat-form-field>
+                            </td>
+                            <td style="width: 470px;">
+                              <mat-form-field>
+                                <mat-icon matSuffix>production_quantity_limits</mat-icon>
+                                <input matInput readonly [formControl]="basic.get('nombre_producto')">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <mat-icon matSuffix>pin</mat-icon>
+                                <input matInput type="number" [formControl]="basic.get('cantidad')" (input)="actualizarTotal()">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <mat-icon matSuffix>attach_money</mat-icon>
+                                <input matInput type="number" [formControl]="basic.get('costo_unitario')" (input)="actualizarTotal()">
+                              </mat-form-field>
+                            </td>
+                            <td>
+                              <mat-form-field>
+                                <mat-label>Fecha Vencimiento</mat-label>
+                                <input matInput [matDatepicker]="picker" [formControl]="basic.get('fecha_vencimiento')" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+                            </td>
+                            <td><button type="button" mat-icon-button color="warn" (click)="restarUno(i)"><mat-icon>delete</mat-icon></button></td>
+                          </tr>
+                          <tr *ngIf="detalle.errors?.['atLeastOne']">
+                            <td colspan="7" class="text-center">
+                              <mat-error>Debe agregar al menos un producto</mat-error>
+                            </td>
+                          </tr>
+                        </tbody>
+                        
+                        <tfoot>
+                          <tr>
+                            <td colspan="6" style="text-align: right; vertical-align: top;">
+                              <div class="totales-columna">
+                                <div>
+                                  <strong>TOTAL:</strong> {{ form.get('total').value | number: '1.2-2' }} Bs
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+
+                    <!-- Tarjetas para pantallas pequeñas -->
+                            <!-- Campos de producto en formato card -->
+                            <!-- <mat-form-field class="w-100 mb-2">
+                              <mat-label>Lote</mat-label>
+                              <mat-icon matSuffix>label</mat-icon>
+                              <input matInput [formControl]="basic.get('lote')">
+                            </mat-form-field>
+                            <mat-form-field class="w-100 mb-2">
+                              <mat-label>Producto</mat-label>
+                              <mat-icon matSuffix>production_quantity_limits</mat-icon>
+                              <input matInput readonly [formControl]="basic.get('nombre_producto')">
+                            </mat-form-field>
+                            <mat-form-field class="w-100 mb-2">
+                              <mat-label>Cantidad</mat-label>
+                              <mat-icon matSuffix>pin</mat-icon>
+                              <input matInput type="number" [formControl]="basic.get('cantidad')" (input)="actualizarTotal()">
+                            </mat-form-field>
+                            <mat-form-field class="w-100 mb-2">
+                              <mat-label>Costo Unitario</mat-label>
+                              <mat-icon matSuffix>attach_money</mat-icon>
+                              <input matInput type="number" [formControl]="basic.get('costo_unitario')" (input)="actualizarTotal()">
+                            </mat-form-field>
+                            <mat-form-field class="w-100 mb-2">
+                              <mat-label>Fecha Vencimiento</mat-label>
+                              <input matInput [matDatepicker]="pickerCard" [formControl]="basic.get('fecha_vencimiento')">
+                              <mat-datepicker-toggle matSuffix [for]="pickerCard"></mat-datepicker-toggle>
+                              <mat-datepicker #pickerCard></mat-datepicker>
+                            </mat-form-field>
+                            <div class="text-right">
+                              <button type="button" mat-icon-button color="warn" (click)="restarUno(i)"><mat-icon>delete</mat-icon></button>
+                            </div> -->
+                  <!-- </div> -->
+                <!-- </mat-tab>
+              </mat-tab-group> -->
+
+              <!-- Botones de acción -->
+              <div class="row mt-5">
+                <div class="col-12 text-center">
+                  <button type="submit" style="margin-right: 5px;" [disabled]="!form.valid || loading" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon> Guardar
+                  </button>
+                  <button type="button" routerLink="/dashboard/ingresos/listar" mat-raised-button color="warn">
+                    <mat-icon>cancel</mat-icon> Cancelar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

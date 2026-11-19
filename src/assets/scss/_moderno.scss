@@ -1,0 +1,354 @@
+/*
+ * Capa visual moderna.
+ * Solo estilos: se carga al final y sobrescribe la plantilla sin tocar la lógica.
+ * Para volver al diseño anterior, quitar el @import de src/styles.scss.
+ */
+
+:root {
+  --ui-primario: #4f46e5;
+  --ui-primario-hover: #4338ca;
+  --ui-primario-suave: #eef2ff;
+  --ui-texto: #1e293b;
+  --ui-texto-suave: #64748b;
+  --ui-borde: #e2e8f0;
+  --ui-fondo: #f5f7fb;
+  --ui-superficie: #ffffff;
+  --ui-radio: 14px;
+  --ui-sombra: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.06);
+  --ui-sombra-hover: 0 2px 4px rgba(15, 23, 42, 0.06), 0 12px 28px rgba(15, 23, 42, 0.10);
+  --ui-fuente: 'Inter', 'Segoe UI', Roboto, sans-serif;
+
+  /* Colores de Angular Material (botones, checkboxes, tabs, etc.) */
+  --mdc-protected-button-container-shape: 10px;
+  --mdc-filled-button-container-shape: 10px;
+  --mdc-outlined-button-container-shape: 10px;
+  --mdc-text-button-container-shape: 10px;
+}
+
+/* ---------- Base ---------- */
+body {
+  font-family: var(--ui-fuente);
+  background-color: var(--ui-fondo);
+  color: var(--ui-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+body,
+.mat-mdc-form-field,
+.mat-mdc-table,
+.mat-mdc-button-base,
+.mat-mdc-select,
+.mat-mdc-option,
+.mat-mdc-menu-item,
+.mat-mdc-dialog-container,
+.mat-mdc-paginator,
+.mat-mdc-tab,
+.swal2-popup,
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ui-fuente) !important;
+  letter-spacing: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ui-texto);
+}
+
+/* ---------- Tarjetas ---------- */
+.card {
+  border: 1px solid var(--ui-borde);
+  border-radius: var(--ui-radio);
+  box-shadow: var(--ui-sombra);
+  -webkit-box-shadow: var(--ui-sombra);
+  overflow: hidden;
+
+  .header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--ui-borde);
+    align-items: center;
+
+    h2 {
+      color: var(--ui-texto);
+      font-size: 18px;
+      font-weight: 600;
+
+      strong {
+        font-weight: 700;
+        color: var(--ui-primario);
+      }
+    }
+  }
+
+  .body {
+    padding: 20px 22px;
+  }
+}
+
+.mat-mdc-card {
+  border-radius: var(--ui-radio) !important;
+  box-shadow: var(--ui-sombra) !important;
+  border: 1px solid var(--ui-borde);
+}
+
+/* ---------- Botones ---------- */
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-outlined-button,
+.btn {
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  border-radius: 10px !important;
+  text-transform: none;
+}
+
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-protected-button-container-color: var(--ui-primario);
+  --mdc-filled-button-container-color: var(--ui-primario);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35) !important;
+  }
+}
+
+.btn-primary {
+  background-color: var(--ui-primario);
+  border-color: var(--ui-primario);
+
+  &:hover,
+  &:focus {
+    background-color: var(--ui-primario-hover);
+    border-color: var(--ui-primario-hover);
+  }
+}
+
+/* ---------- Buscador de las listas ---------- */
+.materialTableHeader {
+  background: transparent !important;
+  padding: 0 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .tbl-search-box {
+    display: flex;
+    align-items: center;
+    background: var(--ui-fondo);
+    border: 1px solid var(--ui-borde);
+    border-radius: 12px;
+    padding: 2px 12px;
+    min-width: 260px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:focus-within {
+      border-color: var(--ui-primario);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+      background: var(--ui-superficie);
+    }
+
+    .search-icon {
+      color: var(--ui-texto-suave) !important;
+      margin-right: 6px;
+    }
+
+    .search-field {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      outline: none;
+      height: 40px;
+      width: 100%;
+      font-size: 14px;
+      color: var(--ui-texto);
+    }
+  }
+}
+
+/* ---------- Tablas ---------- */
+.mat-mdc-table {
+  background: transparent !important;
+  border-collapse: separate;
+
+  .mat-mdc-header-row {
+    background: #f8fafc;
+    height: 48px;
+  }
+
+  .mat-mdc-header-cell {
+    color: var(--ui-texto-suave);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--ui-borde);
+  }
+
+  .mat-mdc-row {
+    height: 56px;
+    transition: background-color 0.12s;
+
+    &:hover {
+      background-color: var(--ui-primario-suave);
+    }
+  }
+
+  .mat-mdc-cell {
+    color: var(--ui-texto);
+    font-size: 14px;
+    border-bottom-color: #f1f5f9;
+  }
+}
+
+.table-responsive {
+  border: 1px solid var(--ui-borde);
+  border-radius: 12px;
+}
+
+.table {
+  --bs-table-hover-bg: var(--ui-primario-suave);
+
+  > thead th {
+    background: #f8fafc;
+    color: var(--ui-texto-suave);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--ui-borde);
+  }
+
+  td {
+    vertical-align: middle;
+    border-color: #f1f5f9;
+  }
+}
+
+.mat-mdc-paginator {
+  background: transparent !important;
+  color: var(--ui-texto-suave);
+}
+
+/* ---------- Formularios ---------- */
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: 10px;
+  --mdc-outlined-text-field-focus-outline-color: var(--ui-primario);
+  --mdc-outlined-text-field-focus-label-text-color: var(--ui-primario);
+  --mdc-filled-text-field-focus-active-indicator-color: var(--ui-primario);
+  --mdc-filled-text-field-focus-label-text-color: var(--ui-primario);
+  --mdc-filled-text-field-caret-color: var(--ui-primario);
+  --mdc-outlined-text-field-caret-color: var(--ui-primario);
+}
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border-color: var(--ui-borde);
+
+  &:focus {
+    border-color: var(--ui-primario);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  }
+}
+
+/* ---------- Diálogos ---------- */
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 18px;
+}
+
+.swal2-popup {
+  border-radius: 18px !important;
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: var(--ui-primario) !important;
+  border-radius: 10px !important;
+}
+
+/* ---------- Barra superior ---------- */
+.navbar {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--ui-borde);
+  box-shadow: none !important;
+}
+
+/* ---------- Menú lateral ---------- */
+.sidebar {
+  border-right: 1px solid var(--ui-borde);
+  box-shadow: none !important;
+
+  .menu .list {
+    padding: 0 10px;
+
+    .header {
+      color: var(--ui-texto-suave);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    li {
+      border-radius: 10px;
+      margin-bottom: 2px;
+
+      a {
+        border-radius: 10px;
+        color: #475569;
+        font-weight: 500;
+
+        &:hover {
+          background-color: #f1f5f9;
+          color: var(--ui-texto);
+        }
+      }
+
+      &.active,
+      &.active-top {
+        background-color: transparent !important;
+
+        > a.menu-top {
+          background-color: var(--ui-primario-suave) !important;
+          color: var(--ui-primario) !important;
+
+          .sidebarIcon,
+          span {
+            color: var(--ui-primario) !important;
+          }
+        }
+      }
+
+      .ml-menu li.active > a {
+        color: var(--ui-primario) !important;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+/* ---------- Chips y badges ---------- */
+.badge {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: 0.4em 0.75em;
+}
+
+/* ---------- Barra de desplazamiento ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

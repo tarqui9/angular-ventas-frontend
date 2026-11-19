@@ -3,17 +3,84 @@
     <div class="block-header d-none d-md-block">
       <app-breadcrumb [title]="'Panel de Inicio'" [items]="['Inicio']" [active_item]="'Panel'"></app-breadcrumb>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card p-4">
-          <h4 class="text-success text-center">BIENVENIDOS AL SISTEMA</h4>
-          <div class="body">
-            <div class="d-flex justify-content-center">
-              <img src="assets/images/portada-ventas1.jpg" class="img-fluid" alt="Portada Ventas">
-            </div>
-          </div>
+
+    <!-- Bienvenida -->
+    <div class="hero">
+      <div class="hero-texto">
+        <span class="hero-etiqueta">Sistema de ventas</span>
+        <h1>Bienvenido al sistema</h1>
+        <p>Gestiona pedidos, productos, distribución y cobros desde un solo lugar.</p>
+        <div class="hero-acciones">
+          <a *appHasRoles="['administrador', 'vendedor', 'almacen']" routerLink="/dashboard/pedidos/listar"
+            class="hero-btn hero-btn-claro">
+            <app-feather-icons [icon]="'shopping-cart'" [class]="'hero-btn-icono'"></app-feather-icons>
+            Ver pedidos
+          </a>
+          <a *appHasRoles="['administrador', 'almacen']" routerLink="/dashboard/suministros"
+            class="hero-btn hero-btn-borde">
+            <app-feather-icons [icon]="'box'" [class]="'hero-btn-icono'"></app-feather-icons>
+            Productos
+          </a>
         </div>
       </div>
+      <div class="hero-imagen d-none d-md-block">
+        <img src="assets/images/portada-ventas1.jpg" alt="Portada Ventas">
+      </div>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <h2 class="seccion-titulo">Accesos rápidos</h2>
+    <div class="accesos">
+      <a *appHasRoles="['administrador', 'vendedor', 'almacen']" routerLink="/dashboard/pedidos/listar" class="acceso">
+        <span class="acceso-icono tono-indigo"><app-feather-icons [icon]="'file-text'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Pedidos</strong><small>Registrar y consultar ventas</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador']" routerLink="/dashboard/clientes" class="acceso">
+        <span class="acceso-icono tono-azul"><app-feather-icons [icon]="'users'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Clientes</strong><small>Cartera de clientes</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador', 'almacen']" routerLink="/dashboard/suministros" class="acceso">
+        <span class="acceso-icono tono-verde"><app-feather-icons [icon]="'box'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Productos</strong><small>Catálogo e inventario</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador', 'almacen']" routerLink="/dashboard/ingresos/listar" class="acceso">
+        <span class="acceso-icono tono-ambar"><app-feather-icons [icon]="'download'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Ingresos</strong><small>Entradas de mercadería</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador', 'distribuidor', 'almacen']" routerLink="/dashboard/distribuciones/listar" class="acceso">
+        <span class="acceso-icono tono-cian"><app-feather-icons [icon]="'truck'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Distribución</strong><small>Entregas y rutas</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador']" routerLink="/dashboard/pagos/listado" class="acceso">
+        <span class="acceso-icono tono-rosa"><app-feather-icons [icon]="'credit-card'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Pagos</strong><small>Cobros registrados</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['vendedor', 'distribuidor']" routerLink="/dashboard/pagos/listar" class="acceso">
+        <span class="acceso-icono tono-rosa"><app-feather-icons [icon]="'credit-card'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Pagos</strong><small>Mis cobros</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador', 'almacen']" routerLink="/dashboard/reportes/ventas" class="acceso">
+        <span class="acceso-icono tono-violeta"><app-feather-icons [icon]="'bar-chart-2'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Reporte de ventas</strong><small>Resultados del periodo</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a *appHasRoles="['administrador', 'almacen']" routerLink="/dashboard/reportes/stock-productos" class="acceso">
+        <span class="acceso-icono tono-verde"><app-feather-icons [icon]="'layers'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Stock</strong><small>Existencias por producto</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
+      <a routerLink="/dashboard/analisis/productos" class="acceso">
+        <span class="acceso-icono tono-indigo"><app-feather-icons [icon]="'trending-up'"></app-feather-icons></span>
+        <span class="acceso-texto"><strong>Productos y demanda</strong><small>Análisis y sugerencias</small></span>
+        <app-feather-icons [icon]="'chevron-right'" [class]="'acceso-flecha'"></app-feather-icons>
+      </a>
     </div>
   </div>
 </section>

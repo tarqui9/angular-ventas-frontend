@@ -352,3 +352,238 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* =====================================================================
+ * Cambios más visibles (segunda pasada)
+ * ===================================================================== */
+
+/* ---------- Letra Inter también dentro de los componentes de Material ---------- */
+.mat-mdc-table :not(.mat-icon):not(.material-icons),
+.mat-mdc-form-field :not(.mat-icon):not(.material-icons),
+.mat-mdc-paginator :not(.mat-icon):not(.material-icons),
+.mdc-button__label,
+.mdc-floating-label,
+.mat-mdc-select-value-text,
+.mdc-list-item__primary-text,
+.mdc-tab__text-label,
+.mat-mdc-menu-item-text,
+input,
+textarea,
+select,
+button:not(.mat-mdc-icon-button) {
+  font-family: var(--ui-fuente) !important;
+}
+
+/* ---------- Fondo general ---------- */
+body {
+  background:
+    radial-gradient(1200px 400px at 80% -10%, rgba(99, 102, 241, 0.08), transparent 60%),
+    var(--ui-fondo) !important;
+  background-attachment: fixed !important;
+}
+
+/* ---------- Menú lateral oscuro ---------- */
+body .sidebar {
+  background: linear-gradient(180deg, #111827 0%, #0f172a 100%) !important;
+  border-right: none !important;
+  box-shadow: 4px 0 24px rgba(15, 23, 42, 0.12) !important;
+
+  .navbar-header {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+    .logo-name,
+    .navbar-brand {
+      color: #fff !important;
+    }
+
+    .navbar-brand img {
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.35);
+    }
+
+    .menuIcon {
+      color: #94a3b8 !important;
+    }
+  }
+
+  .menu .list {
+    .header {
+      color: #64748b !important;
+      background: transparent !important;
+    }
+
+    li {
+      background: transparent !important;
+
+      a,
+      a span,
+      a .sidebarIcon {
+        color: #cbd5e1 !important;
+      }
+
+      a:hover {
+        background-color: rgba(255, 255, 255, 0.06) !important;
+
+        &,
+        span,
+        .sidebarIcon {
+          color: #fff !important;
+        }
+      }
+
+      &.active > a.menu-top,
+      &.active-top > a.menu-top {
+        background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%) !important;
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+
+        &,
+        span,
+        .sidebarIcon {
+          color: #fff !important;
+        }
+      }
+
+      .ml-menu {
+        background: transparent !important;
+
+        li a {
+          color: #94a3b8 !important;
+        }
+
+        li.active > a {
+          color: #a5b4fc !important;
+          background: rgba(99, 102, 241, 0.12) !important;
+        }
+      }
+    }
+  }
+}
+
+/* ---------- Barra superior como tarjeta flotante ---------- */
+.navbar.active,
+.navbar {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid var(--ui-borde) !important;
+  border-radius: 14px;
+  box-shadow: var(--ui-sombra) !important;
+
+  .user_profile .mat-mdc-button {
+    border-radius: 999px;
+    padding: 4px 6px 4px 14px;
+    background: var(--ui-primario-suave);
+    color: var(--ui-primario) !important;
+    font-weight: 600;
+
+    span {
+      color: var(--ui-primario) !important;
+    }
+  }
+}
+
+/* ---------- Encabezado de cada página ---------- */
+.card > .header {
+  background: linear-gradient(90deg, var(--ui-primario-suave) 0%, #fff 70%);
+  padding: 20px 24px !important;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 20px !important;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 26px;
+      margin-right: 8px;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #6366f1, #a855f7);
+    }
+
+    strong {
+      color: var(--ui-texto-suave) !important;
+      font-weight: 500 !important;
+    }
+  }
+}
+
+/* ---------- Botones de acción en las tablas ---------- */
+.mat-mdc-cell .mat-mdc-icon-button,
+.table td .mat-mdc-icon-button {
+  --mdc-icon-button-state-layer-size: 36px;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 6px !important;
+  border-radius: 10px !important;
+  transition: transform 0.12s ease;
+
+  .mat-mdc-button-persistent-ripple,
+  .mat-mdc-button-ripple,
+  .mat-mdc-focus-indicator {
+    border-radius: 10px !important;
+  }
+
+  .mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &.mat-primary {
+    background: #eef2ff;
+    color: #4f46e5 !important;
+  }
+
+  &.mat-warn {
+    background: #fef2f2;
+    color: #dc2626 !important;
+  }
+
+  &.mat-accent {
+    background: #ecfdf5;
+    color: #059669 !important;
+  }
+
+  &:not(.mat-primary):not(.mat-warn):not(.mat-accent) {
+    background: #f1f5f9;
+  }
+}
+
+/* ---------- Tabla: número de fila y primera columna ---------- */
+.mat-mdc-table .mat-mdc-row .mat-mdc-cell:first-child {
+  color: var(--ui-texto-suave);
+  font-weight: 600;
+}
+
+.mat-mdc-table .mat-mdc-row .mat-mdc-cell:nth-child(2) {
+  font-weight: 600;
+}
+
+.mat-mdc-table .mat-mdc-row:nth-child(even) {
+  background-color: #fafbff;
+}
+
+/* ---------- Paginador ---------- */
+.mat-mdc-paginator-container {
+  border-top: 1px solid var(--ui-borde);
+}
+
+/* Acciones en una sola fila */
+.mat-mdc-table .mat-mdc-cell:last-child,
+.table td:last-child {
+  white-space: nowrap;
+
+  > div {
+    display: inline-block;
+  }
+
+  .mat-mdc-icon-button {
+    margin: 0 2px !important;
+  }
+}

@@ -1,0 +1,33 @@
+:host { display: block; }
+
+.analysis-toolbar, .training-intro, .proposal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.charts > .card { min-width: 0; }
+.chart { position: relative; height: 290px; }
+.filter { display: flex; margin-bottom: 20px; }
+.filter-field { width: 100%; max-width: 620px; }
+.quantity-field { width: 105px; }
+.name { min-width: 200px; }
+.next-purchase { min-width: 210px; }
+.next-purchase small { display: block; margin-top: 5px; }
+.proposal-actions { justify-content: flex-start; margin: 16px 0; }
+.client-link { white-space: normal; text-align: left; height: auto; }
+dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+dd { margin: 0; }
+
+@media (max-width: 991px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .charts { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+@media (max-width: 575px) {
+  .stats { gap: 12px; }
+  .analysis-toolbar, .training-intro { align-items: stretch; flex-direction: column; }
+}

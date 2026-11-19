@@ -1,3 +1,4 @@
+import { SugerenciasPedidoComponent } from '../analisis/sugerencias-pedido.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
@@ -23,6 +24,7 @@ import { FormCobroPedidoComponent } from './form-cobro-pedido/form-cobro-pedido.
     FormCobroPedidoComponent
   ],
   imports: [
+    SugerenciasPedidoComponent,
     CommonModule,
     PedidosRoutingModule,
     BreadcrumbComponent,

@@ -257,6 +257,12 @@
                                 </mat-tab>
                             </mat-tab-group>
 
+                            <app-sugerencias-pedido
+                              [clienteId]="form.get('cliente_id')?.value?.id"
+                              [incluidos]="productosIncluidos" [deshabilitado]="loading"
+                              (agregar)="agregarSugerido($event)">
+                            </app-sugerencias-pedido>
+
                             <!-- Botones de acción -->
                             <div class="row mt-5">
                                 <div class="col-12 text-center">

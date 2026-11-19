@@ -253,4 +253,22 @@ export const ROUTES: RouteInfo[] = [
     ],
     roles: ['administrador', 'almacen', 'distribuidor'],
   },
+  {
+    path: 'dashboard/analisis/productos',
+    title: 'Productos y demanda',
+    iconType: 'feather', icon: 'trending-up', class: '', groupTitle: false,
+    badge: '', badgeClass: '', submenu: [],
+  },
+  {
+    path: 'dashboard/analisis/clientes',
+    title: 'Clientes y recompra',
+    iconType: 'feather', icon: 'users', class: '', groupTitle: false,
+    badge: '', badgeClass: '', submenu: [],
+  },
+  {
+    path: 'dashboard/analisis/entrenamiento',
+    title: 'Entrenamiento',
+    iconType: 'feather', icon: 'activity', class: '', groupTitle: false,
+    badge: '', badgeClass: '', submenu: [],
+  },
 ];

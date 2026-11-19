@@ -1,3 +1,4 @@
+import { ProductoCliente } from '../../analisis/analisis.models';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -176,8 +177,8 @@ export class FormCrearPedidosComponent implements OnInit {
     )
   }*/
 
-  listaProducto() {
-    this.productoService.getEnabledList().subscribe(data => {
+  listaProducto(sucursalId?: number) {
+    this.productoService.getEnabledList(sucursalId ? { sucursal_id: sucursalId } : undefined).subscribe(data => {
       this.productos = data;
       this.filteredProductos = data;
     })
@@ -198,6 +199,7 @@ export class FormCrearPedidosComponent implements OnInit {
   }
 
   clienteSeleccionado(cliente: any) {
+    if (cliente?.sucursal_id) this.listaProducto(cliente.sucursal_id);
     // console.log("Cliente seleccionado: ", cliente);
     this.tipoPagos = cliente?.tipopagos;
     this.filteredTipoPagos = cliente?.tipopagos;
@@ -261,8 +263,7 @@ export class FormCrearPedidosComponent implements OnInit {
         })
       });
 
-      const cliente = this.clientes.filter((cliente: any) => cliente?.id === data?.cliente?.id);
-      this.clienteSeleccionado(cliente[0]);
+      this.clienteSeleccionado(data.cliente);
       const pagoSelected = this.filteredTipoPagos.find(tipopago => tipopago.id === data?.tipo_pago_id);
       this.form.patchValue({
         tipopago: pagoSelected,
@@ -347,6 +348,21 @@ export class FormCrearPedidosComponent implements OnInit {
       }
 
     }
+  }
+
+  get productosIncluidos(): number[] {
+    return this.detalle.controls.map(row => Number(row.get('suministro_id')?.value));
+  }
+
+  agregarSugerido(producto: ProductoCliente): void {
+    if (this.loading || this.productosIncluidos.includes(producto.suministro_id)) return;
+    const cantidad = Math.min(producto.cantidad_habitual, producto.stock_disponible);
+    if (!producto.habilitado || cantidad < 1) return;
+    const nuevo = this.createFormDetalle();
+    nuevo.patchValue({ suministro_id: producto.suministro_id, nombre_producto: producto.nombre,
+      cantidad, precio: producto.precio, stock: producto.stock_disponible, subtotal: cantidad * producto.precio });
+    this.detalle.push(nuevo);
+    this.actualizarTotal();
   }
 
   calcularSubtotal(index: number): void {

@@ -101,6 +101,21 @@ export const DASHBOARD_ROUTE: Route[] = [
     path: '403',
     component: Page403Component
   },
+  {
+    path: 'analisis/productos',
+    loadComponent: () => import('./analisis/analisis.component').then(m => m.AnalisisComponent),
+    data: { vista: 'productos' }
+  },
+  {
+    path: 'analisis/clientes',
+    loadComponent: () => import('./analisis/analisis.component').then(m => m.AnalisisComponent),
+    data: { vista: 'clientes' }
+  },
+  {
+    path: 'analisis/entrenamiento',
+    loadComponent: () => import('./analisis/analisis.component').then(m => m.AnalisisComponent),
+    data: { vista: 'entrenamiento' }
+  },
   { path: "**", component: Page404Component },
 ];
 
